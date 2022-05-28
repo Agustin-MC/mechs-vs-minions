@@ -1,61 +1,40 @@
-import React, { useState } from 'react';
-import { Center, Grid } from '@mantine/core';
+import { FC, useState } from 'react';
+import { Container, Center, Grid } from '@mantine/core';
 import CharacterBoard from '@components/Game/CharacterBoard';
+import Board from '@components/Game/Board';
+import Settings from '@components/Game/Settings';
+import Deck from '@components/Game/Deck';
+import TILES from './Board/tiles';
 import useStyles from './index.styles';
+import buildDeck, { shuffleDeck } from '@utilities/buildDeck';
 
-const RUNES = { RED: 'red', GREEN: 'green', BLUE: 'blue', YELLOW: 'yellow' };
-
-type CellProps = {
-  tile: {
-    rune: string | undefined;
-    character: string | undefined;
-  };
-  i: number;
-  j: number;
-};
-
-const tileOne = [
-  [{ rune: RUNES.GREEN }, {}, {}, {}, {}, { rune: RUNES.GREEN }],
-  [{ character: 'Agustin' }, { character: 'Agustin' }, {}, {}, {}, {}],
-  [{}, {}, {}, {}, {}, {}],
-  [{}, {}, { rune: RUNES.RED }, { rune: RUNES.RED }, {}, {}],
-  [{}, { rune: RUNES.BLUE }, {}, {}, { rune: RUNES.BLUE }, {}],
-  [{}, {}, {}, { rune: RUNES.YELLOW }, {}, {}],
-];
-
-const size = { value: 600, units: 'px' };
-const getSize = (divideBy = 1) => `${size.value / divideBy}${size.units}`;
-
-const Cell: React.FC<CellProps> = ({ tile: { rune, character } }) => {
-  const { classes } = useStyles();
-  return (
-    <div
-      style={{ backgroundColor: rune, height: getSize(6), width: '100%' }}
-      className={classes.border}
-    >
-      {character && <div className={classes.circle} />}
-    </div>
-  );
-};
-
-const Game: React.FC = () => {
-  const [grid, setGrid] = useState(tileOne);
+const Game: FC = () => {
+  const [grid, setGrid] = useState(TILES.ONE);
+  const [round, setRound] = useState({ phase: 'setup', players: [{ name: 'Agustin' }] });
+  const [deck, setDeck] = useState(shuffleDeck(buildDeck()));
+  const [discardDeck, setDiscardDeck] = useState([]);
 
   return (
-    <Center my="2rem">
-      <div>
-        <Grid gutter={0} style={{ height: getSize(), width: getSize() }}>
-          {grid.map((row, i) =>
-            row.map((tile, j) => (
-              <Grid.Col span={2}>
-                <Cell tile={tile} i={i} j={j} />
-              </Grid.Col>
-            ))
-          )}
-        </Grid>
+    <Container fluid>
+      <Grid my="1rem">
+        <Grid.Col span={3}>
+          <Deck deck={deck} discardDeck={discardDeck} setDiscardDeck={setDiscardDeck} />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <Center>
+            <div>
+              <Board grid={grid} setGrid={setGrid} />
+            </div>
+          </Center>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <Settings round={round} setRound={setRound} />
+        </Grid.Col>
+      </Grid>
+      <Center>
         <CharacterBoard grid={grid} setGrid={setGrid} />
-      </div>
-    </Center>
+      </Center>
+    </Container>
   );
 };
 

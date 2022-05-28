@@ -1,8 +1,9 @@
 import { FC } from 'react';
-import { Button } from '@mantine/core';
+import { Button, Grid, Center, Text } from '@mantine/core';
 import _ from 'lodash';
 
 type Props = {
+  grid: Array<Array<Object>>;
   setGrid: void;
 };
 
@@ -82,11 +83,34 @@ const CharacterBoard: FC<Props> = ({ grid, setGrid }) => {
 
   return (
     <>
-      <Button onClick={moveLeft}>Move Left</Button>
-      <Button onClick={moveRight}>Move Right</Button>
-      <Button onClick={moveUp}>Move Up</Button>
-      <Button onClick={moveDown}>Move Down</Button>
+      {/*<Button onClick={moveLeft}>Move Left</Button>*/}
+      {/*<Button onClick={moveRight}>Move Right</Button>*/}
+      {/*<Button onClick={moveUp}>Move Up</Button>*/}
+      {/*<Button onClick={moveDown}>Move Down</Button>*/}
+      <Slots />
     </>
+  );
+};
+
+const Slots = () => {
+  return (
+    <Grid style={{ width: '1200px', backgroundColor: 'brown' }}>
+      {[{ slot: 1 }, { slot: 2 }, { slot: 3 }, { slot: 4 }, { slot: 5 }, { slot: 6 }].map(
+        ({ slot }) => (
+          <Grid.Col span={2} key={`player-slot-${slot}`}>
+            <Slot slot={slot} />
+          </Grid.Col>
+        )
+      )}
+    </Grid>
+  );
+};
+
+const Slot = ({ slot }) => {
+  return (
+    <Center style={{ backgroundColor: 'yellow', height: '240px', width: '100%' }}>
+      <Text style={{ fontSize: 48 }}>{slot}</Text>
+    </Center>
   );
 };
 
