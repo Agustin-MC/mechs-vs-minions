@@ -1,11 +1,5 @@
 import Game from '@components/Game';
-import { Welcome } from '../components/Welcome/Welcome';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 
 export default function HomePage() {
-  return (
-    <>
-      <Game />
-    </>
-  );
+  return <Game />;
 }

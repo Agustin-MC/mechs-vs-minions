@@ -1,6 +1,8 @@
+import { tile } from '@components/Game/Board/index';
+
 const RUNES = { RED: 'red', GREEN: 'green', BLUE: 'blue', YELLOW: 'yellow' };
 
-const ONE = [
+const ONE: tile[][] = [
   [{ rune: RUNES.GREEN }, {}, {}, {}, {}, { rune: RUNES.GREEN }],
   [{ character: 'Agustin' }, { character: 'Agustin' }, {}, {}, {}, {}],
   [{}, {}, {}, {}, {}, {}],

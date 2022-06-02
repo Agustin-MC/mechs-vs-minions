@@ -1,9 +1,15 @@
-import { useState, FC } from 'react';
+import { useState, FC, Dispatch, SetStateAction } from 'react';
 import { Modal, Text, Button, Group, TextInput, ActionIcon } from '@mantine/core';
 import { useForm, formList } from '@mantine/form';
 import { Trash } from 'tabler-icons-react';
+import { round as roundProps } from '../index';
 
-const Settings: FC = ({ round, setRound }) => {
+type Props = {
+  round: roundProps;
+  setRound: Dispatch<SetStateAction<roundProps>>;
+};
+
+const Settings: FC<Props> = ({ round, setRound }) => {
   const [opened, setOpened] = useState(round.players.length === 0);
 
   const form = useForm({
@@ -32,10 +38,10 @@ const Settings: FC = ({ round, setRound }) => {
       <Modal opened={opened} onClose={() => setOpened(false)} title="Settings">
         <form
           onSubmit={form.onSubmit((values) =>
-            setRound((prevRound: { phase: string; players: string[] }) => ({
-              ...prevRound,
+            setRound({
+              ...round,
               players: values.players,
-            }))
+            })
           )}
         >
           {fields}

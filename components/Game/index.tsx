@@ -4,15 +4,20 @@ import CharacterBoard from '@components/Game/CharacterBoard';
 import Board from '@components/Game/Board';
 import Settings from '@components/Game/Settings';
 import Deck from '@components/Game/Deck';
-import TILES from './Board/tiles';
-import useStyles from './index.styles';
 import buildDeck, { shuffleDeck } from '@utilities/buildDeck';
+import TILES from './Board/tiles';
+import { tile } from './Board';
+
+export type round = {
+  phase: string;
+  players: { name: string }[];
+};
 
 const Game: FC = () => {
-  const [grid, setGrid] = useState(TILES.ONE);
-  const [round, setRound] = useState({ phase: 'setup', players: [{ name: 'Agustin' }] });
-  const [deck, setDeck] = useState(shuffleDeck(buildDeck()));
-  const [discardDeck, setDiscardDeck] = useState([]);
+  const [grid] = useState<tile[][]>(TILES.ONE);
+  const [round, setRound] = useState<round>({ phase: 'setup', players: [{ name: 'Agustin' }] });
+  const [deck] = useState<string[]>(shuffleDeck(buildDeck()));
+  const [discardDeck, setDiscardDeck] = useState<string[]>([]);
 
   return (
     <Container fluid>
@@ -23,7 +28,7 @@ const Game: FC = () => {
         <Grid.Col span={6}>
           <Center>
             <div>
-              <Board grid={grid} setGrid={setGrid} />
+              <Board grid={grid} />
             </div>
           </Center>
         </Grid.Col>
@@ -32,7 +37,7 @@ const Game: FC = () => {
         </Grid.Col>
       </Grid>
       <Center>
-        <CharacterBoard grid={grid} setGrid={setGrid} />
+        <CharacterBoard />
       </Center>
     </Container>
   );
